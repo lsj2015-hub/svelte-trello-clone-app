@@ -2,6 +2,7 @@ import path from 'path'
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import alias from '@rollup/plugin-alias'
+import strip from '@rollup/plugin-strip'
 import svelte from 'rollup-plugin-svelte';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
@@ -89,7 +90,6 @@ export default {
 				}
 			]
 		}),
-
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),
@@ -97,6 +97,10 @@ export default {
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
 		!production && livereload('public'),
+
+		production && strip({
+			include: '**/*.(svelte|js)',
+		}),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
